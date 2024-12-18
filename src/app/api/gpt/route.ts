@@ -1,10 +1,7 @@
 import OpenAI from "openai";
 import { NextResponse } from "next/server";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
+// OpenAI 클라이언트는 요청이 올 때마다 초기화
 export async function POST(req: Request) {
   if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json(
@@ -12,6 +9,10 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
+
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
 
   try {
     const { userInput } = await req.json();

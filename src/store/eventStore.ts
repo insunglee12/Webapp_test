@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface EventState {
-  selectedImage: string;
+  selectedImage: string | null; 
   inputText: string;
   gptText: string;
-  setSelectedImage: (image: string) => void;
+  setSelectedImage: (image: string | null) => void;
   setInputText: (text: string) => void;
   setGptText: (text: string) => void;
 }
@@ -13,7 +13,7 @@ interface EventState {
 export const useEventStore = create<EventState>()(
   persist(
     (set) => ({
-      selectedImage: '',
+      selectedImage: null,
       inputText: '',
       gptText: '',
       setSelectedImage: (image) => set({ selectedImage: image }),
