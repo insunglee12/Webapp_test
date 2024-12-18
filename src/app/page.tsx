@@ -11,29 +11,22 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen w-full flex flex-col items-center justify-center bg-white">
-      <div className="relative w-full max-w-[430px] mx-auto">
-        <div className="relative w-full" style={{ paddingTop: '232.78%' }}>
+    <main className="h-screen w-full flex items-center justify-center bg-white overflow-hidden">
+      <div 
+        className="relative w-full max-w-[430px] h-full mx-auto"
+        onClick={handleClick}
+      >
+        <div className="relative w-full h-full">
           <Image
             src="/event_1_mainpage.png"
             alt="이벤트 메인 페이지"
             fill
             style={{ 
               objectFit: 'contain',
-              objectPosition: 'top'
+              objectPosition: 'center',
+              cursor: 'pointer'
             }}
             priority
-          />
-          <div 
-            onClick={handleClick}
-            className={`
-              absolute bottom-[4.8%] left-[10%] right-[10%] h-[7%] 
-              cursor-pointer z-10
-              ${process.env.NODE_ENV === 'development' ? 
-                'border-2 border-red-500 bg-red-500 bg-opacity-20' : 
-                ''}
-            `}
-            aria-label="내 마음 전하러 가기"
           />
         </div>
       </div>
