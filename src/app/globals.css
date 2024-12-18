@@ -1,0 +1,42 @@
+/* 티머니 둥근바람 */
+@font-face {
+  font-family: 'TmoneyRoundWind';
+  src: url('/fonts/TMONRoundWind/TmoneyRoundWindExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TmoneyRoundWind';
+  src: url('/fonts/TMONRoundWind/TmoneyRoundWindRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Pretendard */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-Light.otf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-Regular.otf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-Bold.otf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
