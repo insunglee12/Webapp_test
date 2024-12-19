@@ -41,26 +41,42 @@ export default function Result() {
             const targetElement = resultRef.current;
             if (!targetElement) return;
 
-            // 1단계: 현재 화면 상태 그대로 캡처
+            // 1단계: DOM 요소 준비
+            await new Promise(resolve => setTimeout(resolve, 100)); // 렌더링 대기
+
+            // 2단계: 캡처 옵션 설정
             const options = {
               quality: 1.0,
               pixelRatio: 2,
               width: targetElement.offsetWidth,
               height: targetElement.offsetHeight,
+              backgroundColor: '#ffffff',
               style: {
                 transform: 'none',
+                width: '100%',
+                height: '100%'
               },
-              backgroundColor: '#ffffff',
-              // 모든 컨텐츠를 하나의 이미지로 캡처
-              ignoreElements: (element: HTMLElement) => {
-                return false; // 모든 요소 포함
-              }
+              // 모든 요소 캡처
+              onCloneNode: (node: HTMLElement) => {
+                if (node.tagName === 'IMG') {
+                  // 이미지 요소의 경우 완전히 로드될 때까지 대기
+                  return new Promise((resolve) => {
+                    const img = node as HTMLImageElement;
+                    if (img.complete) {
+                      resolve(node.cloneNode(true));
+                    } else {
+                      img.onload = () => resolve(node.cloneNode(true));
+                    }
+                  });
+                }
+                return node.cloneNode(true);
+              },
             };
 
-            // 2단계: 캡처 및 데이터 URL 생성
+            // 3단계: 이미지 캡처
             const dataUrl = await htmlToImage.toPng(targetElement, options);
 
-            // 3단계: 새 창에서 이미지 표시 (기존 창 유지)
+            // 4단계: 새 창에서 이미지 표시
             const newTab = window.open('', '_blank');
             if (newTab) {
               newTab.document.write(`
@@ -72,10 +88,9 @@ export default function Result() {
                   </head>
                   <body style="margin:0; padding:0; background:#ffffff;">
                     <div style="display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px;">
-                      <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto; display:block; box-shadow:0 2px 4px rgba(0,0,0,0.1);" />
+                      <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto; display:block;" />
                     </div>
                     <script>
-                      // 이미지 로드 완료 후 알림 표시
                       window.onload = () => {
                         alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
                       }
