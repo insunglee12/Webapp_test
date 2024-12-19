@@ -23,8 +23,8 @@ export default function InputText() {
       return;
     }
 
-    if (text.length > 300) {
-      setError('300자까지만 입력할 수 있어요');
+    if (text.length > 200) {
+      setError('200자까지만 입력할 수 있어요');
       return;
     }
 
@@ -118,7 +118,7 @@ export default function InputText() {
                 }}
               />
               <div className="text-right mt-2 text-white font-pretendard font-normal text-sm">
-                {text.length}/300
+                {text.length}/200
               </div>
             </div>
             {error && (
