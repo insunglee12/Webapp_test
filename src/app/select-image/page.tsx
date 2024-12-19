@@ -18,51 +18,56 @@ export default function SelectImage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col" style={{ backgroundColor: '#D52121' }}>
-      <div className="w-full max-w-[430px] mx-auto px-4 pt-8 pb-4 flex flex-col">
+    <div className="min-h-screen bg-[#D52121]">
+      <div className="max-w-[430px] mx-auto px-4 py-6">
         <button
           onClick={() => router.back()}
-          className="text-2xl text-white hover:text-gray-200 transition mb-8 w-fit"
+          className="text-2xl text-white hover:text-gray-200 transition mb-6"
         >
-          &#10094;
+          ❮
         </button>
         
-        <h2 className="text-2xl font-tmon font-extrabold text-center mb-8 text-white">
+        <h2 className="text-xl font-tmon font-bold text-center mb-6 text-white">
           편지와 함께 보내고 싶은 이미지를 골라주세요
         </h2>
 
-        <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className="grid grid-cols-3 gap-4 mb-6">
           {images.map((image, index) => (
             <div
               key={index}
-              className="relative pb-[100%]"
+              className="aspect-square relative"
             >
-              <div
-                className={`
-                  absolute inset-0
-                  rounded-full overflow-hidden cursor-pointer
-                  transition-all duration-200 transform hover:scale-105
-                  ${selectedIndex === index ? 'ring-4 ring-white ring-offset-4 ring-offset-[#D52121]' : ''}
-                `}
+              <button
                 onClick={() => handleImageSelect(image, index)}
+                className={`
+                  w-full h-full rounded-full overflow-hidden
+                  transition-transform duration-200 hover:scale-105 active:scale-95
+                  ${selectedIndex === index ? 'ring-4 ring-white' : ''}
+                `}
               >
-                <Image
-                  src={image}
-                  alt={`선택 이미지 ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 430px) 33vw, 120px"
-                  priority={index < 6}
-                />
-              </div>
+                <div className="relative w-full h-full">
+                  <Image
+                    src={image}
+                    alt={`선택 이미지 ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 430px) 33vw, 120px"
+                    priority={index < 6}
+                  />
+                </div>
+              </button>
             </div>
           ))}
         </div>
 
         <button
-          onClick={() => router.push('/input-text')}
-          className="w-full bg-white text-[#D52121] px-6 py-4 rounded-lg hover:bg-gray-100 transition font-pretendard font-normal text-lg"
-          disabled={selectedIndex === null}
+          onClick={() => selectedIndex !== null && router.push('/input-text')}
+          className={`
+            w-full py-4 rounded-lg font-pretendard text-lg transition
+            ${selectedIndex !== null 
+              ? 'bg-white text-[#D52121] hover:bg-gray-100' 
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
+          `}
         >
           선택완료
         </button>
