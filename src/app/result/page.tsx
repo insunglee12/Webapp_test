@@ -39,7 +39,7 @@ export default function Result() {
   };
 
   return (
-    <div className="min-h-screen p-8 flex flex-col items-center" style={{ backgroundColor: '#D52121' }}>
+    <div className="min-h-screen p-8 flex flex-col items-center" style={{ backgroundColor: '#B70606' }}>
       <h2 className="text-2xl font-tmon font-extrabold text-center mb-8 text-white whitespace-pre-wrap">
         나만의 편지가 완성되었어요!{"\n"}이미지를 저장해서 소중한 사람에게 보내보세요
       </h2>
@@ -102,7 +102,7 @@ export default function Result() {
             justifyContent: "flex-start",
             textAlign: "left",         
             lineHeight: "1.5",
-            letterSpacing: "0.02em",
+            letterSpacing: "0.015em",
             wordBreak: "break-all",
     fontSize: "10px",  // 폰트 크기 추가
           }}
@@ -134,7 +134,7 @@ export default function Result() {
             justifyContent: "flex-start",
             textAlign: "left",      
             lineHeight: "1.5",
-            letterSpacing: "0.02em",
+            letterSpacing: "0.015em",
             wordBreak: "break-all",
             fontSize: "10px",  // 폰트 크기 추가
           }}
@@ -171,7 +171,7 @@ export default function Result() {
             </button>
           </div>
           <button
-            onClick={() => window.location.href = 'https://walla.my/survey/ggsg6hr35wLLjnbDlNxf'}
+            onClick={() => window.location.href = 'https://smore.im/form/NupaxNLx4n'}
             className="w-full bg-white/20 text-white px-6 py-3 rounded-lg hover:bg-white/30 transition shadow-md font-pretendard font-normal"
           >
             이벤트 응모하기
