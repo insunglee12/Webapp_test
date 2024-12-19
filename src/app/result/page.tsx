@@ -47,14 +47,13 @@ export default function Result() {
       {/* 캡처될 이미지 영역 */}
       <div
         ref={resultRef}
-        className="relative"
+        className="relative w-full max-w-[518px]"
         style={{
-          width: "518px",
-          height: "800px",
+          aspectRatio: "518/800",
           padding: 0,
           margin: "0 auto",
           backgroundColor: "transparent",
-          overflow: "hidden"  // 영역을 벗어나는 부분 숨김
+          overflow: "hidden"
         }}
       >
         {/* 배경 이미지 */}
