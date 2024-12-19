@@ -38,36 +38,30 @@ export default function Result() {
         // iOS Safari 대응
         if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
           try {
-            // 1단계: 캡처 전 스타일 강제 적용
             const targetElement = resultRef.current;
-            const backgroundImage = targetElement?.querySelector('img');
-            if (backgroundImage) {
-              (backgroundImage as HTMLElement).style.opacity = '1';
-            }
+            if (!targetElement) return;
 
-            // 2단계: 캡처 옵션 상세 설정
+            // 1단계: 현재 화면 상태 그대로 캡처
             const options = {
               quality: 1.0,
               pixelRatio: 2,
-              width: targetElement?.offsetWidth,
-              height: targetElement?.offsetHeight,
+              width: targetElement.offsetWidth,
+              height: targetElement.offsetHeight,
               style: {
                 transform: 'none',
               },
               backgroundColor: '#ffffff',
-              imagePlaceholder: '/event_resultpage.png', // 배경 이미지 경로
-              includeQueryParams: true,
-              filter: (node: HTMLElement) => {
-                // 모든 요소 포함
-                return true;
+              // 모든 컨텐츠를 하나의 이미지로 캡처
+              ignoreElements: (element: HTMLElement) => {
+                return false; // 모든 요소 포함
               }
             };
 
-            // 3단계: 이미지 캡처
+            // 2단계: 캡처 및 데이터 URL 생성
             const dataUrl = await htmlToImage.toPng(targetElement, options);
-            
-            // 4단계: 새 창에서 표시
-            const newTab = window.open();
+
+            // 3단계: 새 창에서 이미지 표시 (기존 창 유지)
+            const newTab = window.open('', '_blank');
             if (newTab) {
               newTab.document.write(`
                 <!DOCTYPE html>
@@ -77,14 +71,19 @@ export default function Result() {
                     <title>Holiday Card</title>
                   </head>
                   <body style="margin:0; padding:0; background:#ffffff;">
-                    <div style="display:flex; justify-content:center; align-items:center; min-height:100vh;">
-                      <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto; display:block;" />
+                    <div style="display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px;">
+                      <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto; display:block; box-shadow:0 2px 4px rgba(0,0,0,0.1);" />
                     </div>
+                    <script>
+                      // 이미지 로드 완료 후 알림 표시
+                      window.onload = () => {
+                        alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
+                      }
+                    </script>
                   </body>
                 </html>
               `);
               newTab.document.close();
-              alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
             }
           } catch (error) {
             console.error('Error:', error);
