@@ -38,10 +38,27 @@ export default function Result() {
         // iOS Safari 대응
         if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
           try {
-            // 1단계: 이미지 캡처
-            const dataUrl = await htmlToImage.toPng(resultRef.current);
+            // 1단계: 캡처 옵션 상세 설정
+            const options = {
+              quality: 1.0,
+              pixelRatio: 2,
+              width: resultRef.current.offsetWidth,
+              height: resultRef.current.offsetHeight,
+              style: {
+                transform: 'none',
+                width: '100%',
+                height: '100%',
+              },
+              filter: (node) => {
+                // 배경 이미지를 포함하도록 필터링
+                return true;
+              }
+            };
+
+            // 2단계: 이미지 캡처
+            const dataUrl = await htmlToImage.toPng(resultRef.current, options);
             
-            // 2단계: 이미지 로드 확인
+            // 3단계: 이미지 로드 확인
             const img = new Image();
             img.src = dataUrl;
             
@@ -49,7 +66,7 @@ export default function Result() {
               img.onload = resolve;
             });
 
-            // 3단계: 새 창에서 표시
+            // 4단계: 새 창에서 표시
             const newTab = window.open();
             if (newTab) {
               newTab.document.write(`
@@ -60,7 +77,9 @@ export default function Result() {
                     <title>Holiday Card</title>
                   </head>
                   <body style="margin:0; padding:0; background:#ffffff;">
-                    <img src="${dataUrl}" style="width:100%; height:auto; display:block;" />
+                    <div style="display:flex; justify-content:center; align-items:center; min-height:100vh;">
+                      <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto; display:block;" />
+                    </div>
                   </body>
                 </html>
               `);
