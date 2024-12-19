@@ -104,7 +104,7 @@ export default function Result() {
             lineHeight: "1.5",
             letterSpacing: "0.02em",
             wordBreak: "break-all",
-    fontSize: "14px",  // 폰트 크기 추가
+    fontSize: "10px",  // 폰트 크기 추가
           }}
         >
            <div 
@@ -136,7 +136,7 @@ export default function Result() {
             lineHeight: "1.5",
             letterSpacing: "0.02em",
             wordBreak: "break-all",
-            fontSize: "14px",  // 폰트 크기 추가
+            fontSize: "10px",  // 폰트 크기 추가
           }}
         >
           <div 

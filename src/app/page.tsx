@@ -11,9 +11,9 @@ export default function Home() {
   };
 
   return (
-    <main className="h-screen w-full flex items-center justify-center bg-white overflow-hidden">
+    <main className="h-screen w-full flex items-center justify-center bg-white overflow-x-hidden">
       <div 
-        className="relative w-full max-w-[430px] h-full mx-auto"
+        className="relative w-full h-full"
         onClick={handleClick}
       >
         <div className="relative w-full h-full">
@@ -22,9 +22,10 @@ export default function Home() {
             alt="이벤트 메인 페이지"
             fill
             style={{ 
-              objectFit: 'contain',
+              objectFit: 'cover',
               objectPosition: 'center',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              width: '100vw'
             }}
             priority
           />
