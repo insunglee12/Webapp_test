@@ -38,26 +38,42 @@ export default function Result() {
         // iOS Safari 대응
         if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
           try {
-            // 이미지 데이터 생성
-            const dataUrl = await htmlToImage.toPng(resultRef.current, {
+            // 캡처 옵션 설정
+            const options = {
               quality: 1.0,
               pixelRatio: 3,
               cacheBust: true,
-            });
+              skipAutoScale: true,
+              style: {
+                transform: 'scale(1)',
+                transformOrigin: 'top left',
+                width: `${resultRef.current.offsetWidth}px`,
+                height: `${resultRef.current.offsetHeight}px`,
+              },
+              backgroundColor: '#ffffff'  // 배경색 추가
+            };
 
-            // blob URL 생성
-            const response = await fetch(dataUrl);
-            const blob = await response.blob();
-            const blobUrl = URL.createObjectURL(blob);
-            
-            // 새 창에서 이미지 직접 열기
-            window.open(blobUrl, '_blank');
-            
-            // 메모리 정리
-            setTimeout(() => {
-              URL.revokeObjectURL(blobUrl);
-            }, 60000); // 1분 후 정리
-            
+            // 이미지 데이터 생성
+            const dataUrl = await htmlToImage.toPng(resultRef.current, options);
+
+            // 새 창에서 이미지 표시
+            const newTab = window.open('', '_blank');
+            if (newTab) {
+              newTab.document.write(`
+                <!DOCTYPE html>
+                <html>
+                  <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Holiday Card</title>
+                  </head>
+                  <body style="margin:0; padding:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#ffffff;">
+                    <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto;" />
+                  </body>
+                </html>
+              `);
+              newTab.document.close();
+              alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
+            }
           } catch (error) {
             console.error('Image conversion error:', error);
             alert('이미지 변환 중 오류가 발생했습니다. 다시 시도해주세요.');
