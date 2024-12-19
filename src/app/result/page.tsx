@@ -37,10 +37,16 @@ export default function Result() {
       if (isMobile) {
         // iOS Safari 대응
         if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-          const img = new Image();
-          
-          // 이미지 로드 완료 후 처리
-          img.onload = () => {
+          try {
+            // canvas 방식으로 변경
+            const canvas = await htmlToImage.toCanvas(resultRef.current, {
+              quality: 1.0,
+              pixelRatio: 3,
+              cacheBust: true,
+            });
+            
+            const dataUrl = canvas.toDataURL('image/png');
+            
             const newTab = window.open('', '_blank');
             if (newTab) {
               newTab.document.write(`
@@ -58,9 +64,10 @@ export default function Result() {
               newTab.document.close(); // HTML 문서 완성 후 닫기
               alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
             }
-          };
-          
-          img.src = dataUrl;
+          } catch (error) {
+            console.error('Canvas conversion error:', error);
+            alert('이미지 변환 중 오류가 발생했습니다. 다시 시도해주세요.');
+          }
         } else {
           // 기존 Android 등 다른 모바일 기기 처리
           const img = document.createElement('img');
