@@ -35,14 +35,13 @@ export default function SelectImage() {
           {images.map((image, index) => (
             <div
               key={index}
-              className="aspect-square relative p-1"
+              className="aspect-square relative"
             >
               <button
                 onClick={() => handleImageSelect(image, index)}
                 className={`
                   w-full h-full rounded-full overflow-hidden
                   transition-transform duration-200 hover:scale-105 active:scale-95
-                  bg-white/20 backdrop-blur-sm
                   ${selectedIndex === index ? 'ring-4 ring-white' : ''}
                 `}
               >
@@ -50,8 +49,9 @@ export default function SelectImage() {
                   <Image
                     src={image}
                     alt={`선택 이미지 ${index + 1}`}
-                    fill
-                    className="object-contain p-2"
+                    width={100}
+                    height={100}
+                    className="object-contain"
                     sizes="(max-width: 430px) 33vw, 120px"
                     priority={index < 6}
                   />
