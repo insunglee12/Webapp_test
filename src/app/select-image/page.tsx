@@ -42,15 +42,16 @@ export default function SelectImage() {
                 className={`
                   w-full h-full rounded-full overflow-hidden
                   transition-transform duration-200 hover:scale-105 active:scale-95
+                  bg-white/20 backdrop-blur-sm
                   ${selectedIndex === index ? 'ring-4 ring-white' : ''}
                 `}
               >
-                <div className="relative w-full h-full">
+                <div className="relative w-full h-full flex items-center justify-center">
                   <Image
                     src={image}
                     alt={`선택 이미지 ${index + 1}`}
                     fill
-                    className="object-cover p-0.5"
+                    className="object-contain p-2"
                     sizes="(max-width: 430px) 33vw, 120px"
                     priority={index < 6}
                   />
