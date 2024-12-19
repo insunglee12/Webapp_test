@@ -94,7 +94,7 @@ export default function InputText() {
       
       <div className="flex flex-col items-center justify-center flex-1">
         <div className="w-full max-w-md">
-          <h2 className="text-2xl font-tmon font-extrabold text-center mb-8 text-white">
+          <h2 className="text-2xl font-tmon font-extrabold text-center mb-6 text-white">
             소중한 사람에게 하고 싶은 말을 간단히 적어주세요
           </h2>
           <form onSubmit={handleSubmit} className="w-full">
