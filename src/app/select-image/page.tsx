@@ -31,11 +31,11 @@ export default function SelectImage() {
           편지와 함께 보내고 싶은 이미지를 골라주세요
         </h2>
 
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-3 gap-5 mb-8 px-2">
           {images.map((image, index) => (
             <div
               key={index}
-              className="aspect-square relative"
+              className="aspect-square relative p-1"
             >
               <button
                 onClick={() => handleImageSelect(image, index)}
@@ -50,7 +50,7 @@ export default function SelectImage() {
                     src={image}
                     alt={`선택 이미지 ${index + 1}`}
                     fill
-                    className="object-cover"
+                    className="object-cover p-0.5"
                     sizes="(max-width: 430px) 33vw, 120px"
                     priority={index < 6}
                   />

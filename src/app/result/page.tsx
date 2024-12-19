@@ -189,7 +189,7 @@ export default function Result() {
           className="absolute font-pretendard font-light"
           style={{
             left: "15%",
-            top: "32%",
+            top: "35%",
             width: "70%",
             height: "21%",
             display: "flex",
@@ -221,7 +221,7 @@ export default function Result() {
           className="absolute font-pretendard font-light"
           style={{
             left: "15%",
-            top: "63%",
+            top: "61%",
             width: "70%",
             height: "17%",
             display: "flex",
