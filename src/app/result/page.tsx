@@ -38,34 +38,34 @@ export default function Result() {
         // iOS Safari 대응
         if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
           try {
-            // 1단계: 캡처 옵션 상세 설정
+            // 1단계: 캡처 전 스타일 강제 적용
+            const targetElement = resultRef.current;
+            const backgroundImage = targetElement?.querySelector('img');
+            if (backgroundImage) {
+              (backgroundImage as HTMLElement).style.opacity = '1';
+            }
+
+            // 2단계: 캡처 옵션 상세 설정
             const options = {
               quality: 1.0,
               pixelRatio: 2,
-              width: resultRef.current.offsetWidth,
-              height: resultRef.current.offsetHeight,
+              width: targetElement?.offsetWidth,
+              height: targetElement?.offsetHeight,
               style: {
                 transform: 'none',
-                width: '100%',
-                height: '100%',
               },
+              backgroundColor: '#ffffff',
+              imagePlaceholder: '/event_resultpage.png', // 배경 이미지 경로
+              includeQueryParams: true,
               filter: (node: HTMLElement) => {
-                // 배경 이미지를 포함하도록 필터링
+                // 모든 요소 포함
                 return true;
               }
             };
 
-            // 2단계: 이미지 캡처
-            const dataUrl = await htmlToImage.toPng(resultRef.current, options);
+            // 3단계: 이미지 캡처
+            const dataUrl = await htmlToImage.toPng(targetElement, options);
             
-            // 3단계: 이미지 로드 확인
-            const img = new Image();
-            img.src = dataUrl;
-            
-            await new Promise((resolve) => {
-              img.onload = resolve;
-            });
-
             // 4단계: 새 창에서 표시
             const newTab = window.open();
             if (newTab) {
@@ -84,6 +84,7 @@ export default function Result() {
                 </html>
               `);
               newTab.document.close();
+              alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
             }
           } catch (error) {
             console.error('Error:', error);
