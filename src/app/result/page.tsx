@@ -20,7 +20,7 @@ export default function Result() {
       
       const options = {
         quality: 1.0,
-        pixelRatio: 3, // 고해상도
+        pixelRatio: 3,
         cacheBust: true,
         // 모바일 최적화 옵션
         skipAutoScale: true,
@@ -35,17 +35,31 @@ export default function Result() {
       const dataUrl = await htmlToImage.toPng(resultRef.current, options);
 
       if (isMobile) {
-        // 모바일용 저장 방식
-        const img = document.createElement('img');
-        img.src = dataUrl;
-        
-        const newWindow = window.open('');
-        if (newWindow) {
-          newWindow.document.write(img.outerHTML);
-          // iOS Safari 대응
-          if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            alert('이미지를 길게 눌러서 저장해주세요');
-          } else {
+        // iOS Safari 대응
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+          const newTab = window.open();
+          if (newTab) {
+            newTab.document.write(`
+              <html>
+                <head>
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <title>Holiday Card</title>
+                </head>
+                <body style="margin:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#ffffff;">
+                  <img src="${dataUrl}" style="max-width:100%; height:auto;" alt="holiday card" />
+                </body>
+              </html>
+            `);
+            alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
+          }
+        } else {
+          // 기존 Android 등 다른 모바일 기기 처리
+          const img = document.createElement('img');
+          img.src = dataUrl;
+          
+          const newWindow = window.open('');
+          if (newWindow) {
+            newWindow.document.write(img.outerHTML);
             alert('이미지를 눌러서 저장해주세요');
           }
         }
