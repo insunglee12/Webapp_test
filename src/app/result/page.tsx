@@ -13,22 +13,52 @@ export default function Result() {
 
   const handleSaveImage = async () => {
     if (!resultRef.current) return;
+    
     try {
-      // 이미지 캡처 및 저장
-      const dataUrl = await htmlToImage.toPng(resultRef.current, {
+      // 모바일 디바이스 체크
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      const options = {
         quality: 1.0,
         pixelRatio: 3, // 고해상도
         cacheBust: true,
-      });
+        // 모바일 최적화 옵션
+        skipAutoScale: true,
+        style: {
+          transform: 'scale(1)',
+          transformOrigin: 'top left',
+          width: `${resultRef.current.offsetWidth}px`,
+          height: `${resultRef.current.offsetHeight}px`,
+        },
+      };
 
-      // 이미지 다운로드
-      const link = document.createElement("a");
-      link.download = `holiday-card.png`;
-      link.href = dataUrl;
-      link.click();
+      const dataUrl = await htmlToImage.toPng(resultRef.current, options);
+
+      if (isMobile) {
+        // 모바일용 저장 방식
+        const img = document.createElement('img');
+        img.src = dataUrl;
+        
+        const newWindow = window.open('');
+        if (newWindow) {
+          newWindow.document.write(img.outerHTML);
+          // iOS Safari 대응
+          if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            alert('이미지를 길게 눌러서 저장해주세요');
+          } else {
+            alert('이미지를 눌러서 저장해주세요');
+          }
+        }
+      } else {
+        // PC용 저장 방식
+        const link = document.createElement('a');
+        link.download = 'holiday-card.png';
+        link.href = dataUrl;
+        link.click();
+      }
     } catch (err) {
-      console.error("Error:", err);
-      alert("이미지 저장에 실패했습니다.");
+      console.error('Error:', err);
+      alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -93,7 +123,7 @@ export default function Result() {
           className="absolute font-pretendard font-light"
           style={{
             left: "15%",
-            top: "33%",
+            top: "35%",
             width: "70%",
             height: "21%",
             display: "flex",
@@ -125,7 +155,7 @@ export default function Result() {
           className="absolute font-pretendard font-light"
           style={{
             left: "15%",
-            top: "64%",
+            top: "65%",
             width: "70%",
             height: "17%",
             display: "flex",
