@@ -73,10 +73,10 @@ export default function Result() {
           <div
             className="absolute"
             style={{
-              left: "17.5%",
-              top: "32%",
+              left: "42%",
+              top: "5%",
               width: "14%",
-              height: "15%",
+              height: "14%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -93,9 +93,9 @@ export default function Result() {
           <div
           className="absolute font-pretendard font-light"
           style={{
-            left: "13%",
-            top: "52%",
-            width: "75%",
+            left: "15%",
+            top: "33%",
+            width: "70%",
             height: "21%",
             display: "flex",
             flexDirection: "column",
@@ -105,9 +105,7 @@ export default function Result() {
             lineHeight: "1.5",
             letterSpacing: "0.02em",
             wordBreak: "break-all",
-            border: "2px dashed red",  // 가이드라인 추가
-    backgroundColor: "rgba(255, 0, 0, 0.1)",  // 반투명한 배경 추가
-    fontSize: "12px",  // 폰트 크기 추가
+    fontSize: "14px",  // 폰트 크기 추가
           }}
         >
            <div 
@@ -127,9 +125,9 @@ export default function Result() {
         <div
           className="absolute font-pretendard font-light"
           style={{
-            left: "13%",
-            top: "75%",
-            width: "75%",
+            left: "15%",
+            top: "64%",
+            width: "70%",
             height: "17%",
             display: "flex",
             flexDirection: "column",
@@ -139,9 +137,7 @@ export default function Result() {
             lineHeight: "1.5",
             letterSpacing: "0.02em",
             wordBreak: "break-all",
-            border: "2px dashed blue",  // 가이드라인 추가
-            backgroundColor: "rgba(0, 0, 255, 0.1)",  // 반투명한 배경 추가
-            fontSize: "12px",  // 폰트 크기 추가
+            fontSize: "14px",  // 폰트 크기 추가
           }}
         >
           <div 
