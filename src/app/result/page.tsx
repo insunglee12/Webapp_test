@@ -49,7 +49,7 @@ export default function Result() {
                 width: '100%',
                 height: '100%',
               },
-              filter: (node) => {
+              filter: (node: HTMLElement) => {
                 // 배경 이미지를 포함하도록 필터링
                 return true;
               }
