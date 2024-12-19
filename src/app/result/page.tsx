@@ -4,6 +4,7 @@ import { useEventStore } from "@/store/eventStore";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import * as htmlToImage from "html-to-image";
+import { domToCanvas } from 'modern-screenshot';
 
 export default function Result() {
   const router = useRouter();
@@ -14,117 +15,58 @@ export default function Result() {
   const handleSaveImage = async () => {
     if (!resultRef.current) return;
     
-    try {
-      // 모바일 디바이스 체크
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      
-      const options = {
-        quality: 1.0,
-        pixelRatio: 3,
-        cacheBust: true,
-        // 모바일 최적화 옵션
-        skipAutoScale: true,
-        style: {
-          transform: 'scale(1)',
-          transformOrigin: 'top left',
-          width: `${resultRef.current.offsetWidth}px`,
-          height: `${resultRef.current.offsetHeight}px`,
-        },
-      };
-
-      const dataUrl = await htmlToImage.toPng(resultRef.current, options);
-
-      if (isMobile) {
-        // iOS Safari 대응
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-          try {
-            const targetElement = resultRef.current;
-            if (!targetElement) return;
-
-            // 1단계: DOM 요소 준비
-            await new Promise(resolve => setTimeout(resolve, 100)); // 렌더링 대기
-
-            // 2단계: 캡처 옵션 설정
-            const options = {
-              quality: 1.0,
-              pixelRatio: 2,
-              width: targetElement.offsetWidth,
-              height: targetElement.offsetHeight,
-              backgroundColor: '#ffffff',
-              style: {
-                transform: 'none',
-                width: '100%',
-                height: '100%'
-              },
-              // 모든 요소 캡처
-              onCloneNode: (node: HTMLElement) => {
-                if (node.tagName === 'IMG') {
-                  // 이미지 요소의 경우 완전히 로드될 때까지 대기
-                  return new Promise((resolve) => {
-                    const img = node as HTMLImageElement;
-                    if (img.complete) {
-                      resolve(node.cloneNode(true));
-                    } else {
-                      img.onload = () => resolve(node.cloneNode(true));
-                    }
-                  });
-                }
-                return node.cloneNode(true);
-              },
-            };
-
-            // 3단계: 이미지 캡처
-            const dataUrl = await htmlToImage.toPng(targetElement, options);
-
-            // 4단계: 새 창에서 이미지 표시
-            const newTab = window.open('', '_blank');
-            if (newTab) {
-              newTab.document.write(`
-                <!DOCTYPE html>
-                <html>
-                  <head>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Holiday Card</title>
-                  </head>
-                  <body style="margin:0; padding:0; background:#ffffff;">
-                    <div style="display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px;">
-                      <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto; display:block;" />
-                    </div>
-                    <script>
-                      window.onload = () => {
-                        alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
-                      }
-                    </script>
-                  </body>
-                </html>
-              `);
-              newTab.document.close();
-            }
-          } catch (error) {
-            console.error('Error:', error);
-            alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
-          }
-        } else {
-          // 기존 Android 등 다른 모바일 기기 처리
-          const img = document.createElement('img');
-          img.src = dataUrl;
-          
-          const newWindow = window.open('');
-          if (newWindow) {
-            newWindow.document.write(img.outerHTML);
-            alert('이미지를 눌러서 저장해주세요');
-          }
+    // iOS Safari 대응
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      try {
+        // modern-screenshot을 사용하여 캡처
+        const canvas = await domToCanvas(resultRef.current, {
+          debug: true,
+        });
+        const dataUrl = canvas.toDataURL('image/png');
+        
+        const newTab = window.open('', '_blank');
+        if (newTab) {
+          newTab.document.write(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Holiday Card</title>
+              </head>
+              <body style="margin:0; padding:0; background:#ffffff;">
+                <div style="display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px;">
+                  <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto; display:block;" />
+                </div>
+                <script>
+                  window.onload = () => {
+                    alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
+                  }
+                </script>
+              </body>
+            </html>
+          `);
+          newTab.document.close();
         }
-      } else {
-        // PC용 저장 방식
+      } catch (error) {
+        console.error('Error:', error);
+        alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
+      }
+    } else {
+      // 기존 다른 브라우저 대응 코드 유지
+      try {
+        const dataUrl = await htmlToImage.toPng(resultRef.current, {
+          quality: 1.0,
+          cacheBust: true,
+        });
+        
         const link = document.createElement('a');
         link.download = 'holiday-card.png';
         link.href = dataUrl;
         link.click();
+      } catch (error) {
+        console.error('Error:', error);
+        alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
       }
-    } catch (err) {
-      console.error('Error:', err);
-      alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
