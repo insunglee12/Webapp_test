@@ -38,25 +38,29 @@ export default function Result() {
         // iOS Safari 대응
         if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
           const img = new Image();
-          img.src = dataUrl;
           
-          const newTab = window.open();
-          if (newTab) {
-            newTab.document.body.style.margin = '0';
-            newTab.document.body.style.background = '#ffffff';
-            newTab.document.body.style.display = 'flex';
-            newTab.document.body.style.justifyContent = 'center';
-            newTab.document.body.style.alignItems = 'center';
-            
-            // 이미지 스타일 직접 설정
-            img.style.maxWidth = '100%';
-            img.style.height = 'auto';
-            img.style.display = 'block';
-            
-            // 이미지를 직접 body에 추가
-            newTab.document.body.appendChild(img);
-            alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
-          }
+          // 이미지 로드 완료 후 처리
+          img.onload = () => {
+            const newTab = window.open('', '_blank');
+            if (newTab) {
+              newTab.document.write(`
+                <!DOCTYPE html>
+                <html>
+                  <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Holiday Card</title>
+                  </head>
+                  <body style="margin:0; padding:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#ffffff;">
+                    <img src="${dataUrl}" style="max-width:100%; width:auto; height:auto;" />
+                  </body>
+                </html>
+              `);
+              newTab.document.close(); // HTML 문서 완성 후 닫기
+              alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
+            }
+          };
+          
+          img.src = dataUrl;
         } else {
           // 기존 Android 등 다른 모바일 기기 처리
           const img = document.createElement('img');

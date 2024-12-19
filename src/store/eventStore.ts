@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface EventState {
-  selectedImage: string | null; 
+  selectedImage: string | null;
   inputText: string;
   gptText: string;
   setSelectedImage: (image: string | null) => void;
