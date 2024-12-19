@@ -1,4 +1,8 @@
 /* 티머니 둥근바람 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
   font-family: 'TmoneyRoundWind';
   src: url('/fonts/TMONRoundWind/TmoneyRoundWindExtraBold.ttf') format('truetype');
@@ -36,7 +40,3 @@
   font-weight: 700;
   font-style: normal;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
