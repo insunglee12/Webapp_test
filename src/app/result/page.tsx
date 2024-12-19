@@ -37,19 +37,24 @@ export default function Result() {
       if (isMobile) {
         // iOS Safari 대응
         if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+          const img = new Image();
+          img.src = dataUrl;
+          
           const newTab = window.open();
           if (newTab) {
-            newTab.document.write(`
-              <html>
-                <head>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>Holiday Card</title>
-                </head>
-                <body style="margin:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#ffffff;">
-                  <img src="${dataUrl}" style="max-width:100%; height:auto;" alt="holiday card" />
-                </body>
-              </html>
-            `);
+            newTab.document.body.style.margin = '0';
+            newTab.document.body.style.background = '#ffffff';
+            newTab.document.body.style.display = 'flex';
+            newTab.document.body.style.justifyContent = 'center';
+            newTab.document.body.style.alignItems = 'center';
+            
+            // 이미지 스타일 직접 설정
+            img.style.maxWidth = '100%';
+            img.style.height = 'auto';
+            img.style.display = 'block';
+            
+            // 이미지를 직접 body에 추가
+            newTab.document.body.appendChild(img);
             alert('이미지를 길게 누른 후 "이미지 저장"을 선택해주세요');
           }
         } else {
@@ -137,7 +142,7 @@ export default function Result() {
           className="absolute font-pretendard font-light"
           style={{
             left: "15%",
-            top: "35%",
+            top: "32%",
             width: "70%",
             height: "21%",
             display: "flex",
@@ -169,7 +174,7 @@ export default function Result() {
           className="absolute font-pretendard font-light"
           style={{
             left: "15%",
-            top: "65%",
+            top: "63%",
             width: "70%",
             height: "17%",
             display: "flex",
