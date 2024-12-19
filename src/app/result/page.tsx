@@ -73,7 +73,7 @@ export default function Result() {
           <div
             className="absolute"
             style={{
-              left: "42%",
+              left: "43%",
               top: "5%",
               width: "14%",
               height: "14%",

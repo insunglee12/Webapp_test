@@ -51,8 +51,15 @@ Step 3 : ####{comment : 따스한 마음과 사랑이 담긴 편지를 받았어
       throw new Error('Invalid response from OpenAI');
     }
 
+    // 응답에서 comment: 이후의 텍스트만 정확하게 추출
+    const response = completion.choices[0].message.content;
+    const commentMatch = response.match(/comment\s*:\s*([^}]+)/);
+    const processedResponse = commentMatch 
+      ? commentMatch[1].trim() 
+      : response.trim();
+
     return NextResponse.json({ 
-      result: completion.choices[0].message.content 
+      result: processedResponse 
     });
 
   } catch (error: any) {
