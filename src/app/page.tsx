@@ -11,21 +11,21 @@ export default function Home() {
   };
 
   return (
-    <main className="h-screen w-full flex items-center justify-center bg-white overflow-x-hidden">
+    <main className="min-h-screen w-full flex items-center justify-center bg-white overflow-y-auto overflow-x-hidden">
       <div 
-        className="relative w-full h-full"
+        className="relative w-full h-auto"
         onClick={handleClick}
       >
-        <div className="relative w-full h-full">
+        <div className="relative w-full" style={{ aspectRatio: '430/932' }}>
           <Image
             src="/event_1_mainpage.png"
             alt="이벤트 메인 페이지"
             fill
             style={{ 
-              objectFit: 'cover',
+              objectFit: 'contain',
               objectPosition: 'center',
               cursor: 'pointer',
-              width: '100vw'
+              width: '100%'
             }}
             priority
           />
