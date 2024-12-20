@@ -30,7 +30,7 @@ export default function Home() {
       className="relative min-h-screen w-full overflow-hidden"
     >
       <Image
-        src="/main.png"
+        src="/event_1_mainpage.png"
         alt="메인 이미지"
         width={518}
         height={800}
