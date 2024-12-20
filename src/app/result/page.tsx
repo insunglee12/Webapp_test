@@ -18,31 +18,15 @@ export default function Result() {
     // iOS Safari 대응
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
       try {
-        const targetElement = resultRef.current;
-        if (!targetElement) return;
-
-        // 캡처 전 스타일 임시 적용
-        const originalStyle = targetElement.style.cssText;
-        targetElement.style.cssText = `
-          width: 518px;
-          height: 800px;
-          position: relative;
-          padding: 0;
-          margin: 0;
-          background-color: transparent;
-          overflow: hidden;
-        `;
-
-        const canvas = await domToCanvas(targetElement, {
+        // modern-screenshot을 사용하여 캡처
+        const canvas = await domToCanvas(resultRef.current, {
           debug: true,
           scale: 2.5, // 해상도 증가
           quality: 1.0, // 최대 품질
           backgroundColor: null // 배경색 제거
         });
         
-        // 원래 스타일 복구
-        targetElement.style.cssText = originalStyle;
-        
+        // canvas 품질 설정
         const dataUrl = canvas.toDataURL('image/png', 1.0);
         
         const newTab = window.open('', '_blank');
