@@ -21,8 +21,15 @@ export default function Result() {
         // modern-screenshot을 사용하여 캡처
         const canvas = await domToCanvas(resultRef.current, {
           debug: true,
+          scale: 2.5, // 해상도 증가
+          quality: 1.0, // 최대 품질
+          useCORS: true, // 크로스 도메인 이미지 처리
+          scrollY: -window.scrollY, // 스크롤 위치 보정
+          backgroundColor: null // 배경색 제거
         });
-        const dataUrl = canvas.toDataURL('image/png');
+        
+        // canvas 품질 설정
+        const dataUrl = canvas.toDataURL('image/png', 1.0);
         
         const newTab = window.open('', '_blank');
         if (newTab) {
@@ -33,9 +40,9 @@ export default function Result() {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Holiday Card</title>
               </head>
-              <body style="margin:0; padding:0; background:#ffffff;">
-                <div style="display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px;">
-                  <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto; display:block;" />
+              <body style="margin:0; padding:0; background:transparent;">
+                <div style="display:flex; justify-content:center; align-items:center; min-height:100vh;">
+                  <img src="${dataUrl}" style="width:100%; max-width:518px; height:auto; display:block; border:none;" />
                 </div>
                 <script>
                   window.onload = () => {
