@@ -31,15 +31,17 @@ export default function Home() {
       style={{ backgroundColor: '#B70606' }}
     >
       <div className="relative w-full h-full flex flex-col items-center justify-center">
-        {/* 기존 컨텐츠는 그대로 유지 */}
-        <Image
-          src="/event_mainpage.png"
-          alt="메인 이미지"
-          width={518}
-          height={800}
-          priority
-          className="w-full max-w-[518px]"
-        />
+        {/* 이미지 로딩 방식 수정 */}
+        <div className="relative w-full max-w-[518px] aspect-[518/800]">
+          <Image
+            src="/event_mainpage.png"
+            alt="메인 이미지"
+            fill
+            priority
+            className="object-contain"
+            sizes="(max-width: 518px) 100vw, 518px"
+          />
+        </div>
         
         {/* 물결 효과 */}
         {ripple.show && (
@@ -55,7 +57,7 @@ export default function Home() {
           />
         )}
         
-        {/* 로딩 인디케이터 (선택사항) */}
+        {/* 로딩 인디케이터 */}
         {isLoading && (
           <div className="absolute top-5 right-5 animate-pulse">
             <div className="w-3 h-3 bg-white rounded-full"></div>
