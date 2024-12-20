@@ -34,7 +34,7 @@ export default function Home() {
         {/* 이미지 로딩 방식 수정 */}
         <div className="relative w-full max-w-[518px] aspect-[518/800]">
           <Image
-            src="/event_mainpage.png"
+            src="/event_1_mainpage.png"
             alt="메인 이미지"
             fill
             priority
