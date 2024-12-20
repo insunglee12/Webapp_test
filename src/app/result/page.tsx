@@ -8,9 +8,37 @@ import { domToCanvas } from 'modern-screenshot';
 
 export default function Result() {
   const router = useRouter();
-  const { selectedImage, inputText, gptText, setSelectedImage, setInputText } =
-    useEventStore();
+  const { selectedImage, inputText, gptText, setSelectedImage, setInputText } = useEventStore();
   const resultRef = useRef<HTMLDivElement>(null);
+
+  const formatComment = (text: string) => {
+    try {
+      // gptText에서 텍스트 추출
+      const commentMatch = text.match(/comment\s*:\s*([^}]+)/);
+      const processedResponse = commentMatch 
+        ? commentMatch[1].trim() 
+        : text.trim();
+      
+      // 빈 응답 체크
+      if (!processedResponse) {
+        throw new Error('Empty processed response');
+      }
+      
+      // 줄바꿈 처리
+      return processedResponse
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line.length > 0)
+        .join('\n');
+
+    } catch (error) {
+      console.error('Error processing gptText:', error);
+      // 에러 발생 시 원본 텍스트에서 Step 부분 제거
+      return text
+        .replace(/Step \d+:?[^]*$/, '')
+        .trim();
+    }
+  };
 
   const handleSaveImage = async () => {
     if (!resultRef.current) return;
@@ -191,7 +219,7 @@ export default function Result() {
       alignItems: "flex-start"      // 추가
     }}
   >
-    {gptText}
+    {formatComment(gptText)}
   </div>
         </div>
       
