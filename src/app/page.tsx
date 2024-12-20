@@ -28,42 +28,36 @@ export default function Home() {
     <main 
       onClick={handleClick}
       className="relative min-h-screen w-full overflow-hidden"
-      style={{ backgroundColor: '#B70606' }}
     >
-      <div className="relative w-full h-full flex flex-col items-center justify-center">
-        {/* 이미지 로딩 방식 수정 */}
-        <div className="relative w-full max-w-[518px] aspect-[518/800]">
-          <Image
-            src="/event_1_mainpage.png"
-            alt="메인 이미지"
-            fill
-            priority
-            className="object-contain"
-            sizes="(max-width: 518px) 100vw, 518px"
-          />
+      <Image
+        src="/main.png"
+        alt="메인 이미지"
+        width={518}
+        height={800}
+        priority
+        className="w-full"
+      />
+      
+      {/* 물결 효과 */}
+      {ripple.show && (
+        <div 
+          className="absolute animate-ripple rounded-full bg-white/30"
+          style={{
+            left: ripple.x - 50,
+            top: ripple.y - 50,
+            width: 100,
+            height: 100,
+            pointerEvents: 'none'
+          }}
+        />
+      )}
+      
+      {/* 로딩 인디케이터 */}
+      {isLoading && (
+        <div className="absolute top-5 right-5 animate-pulse">
+          <div className="w-3 h-3 bg-white rounded-full"></div>
         </div>
-        
-        {/* 물결 효과 */}
-        {ripple.show && (
-          <div 
-            className="absolute animate-ripple rounded-full bg-white/30"
-            style={{
-              left: ripple.x - 50,
-              top: ripple.y - 50,
-              width: 100,
-              height: 100,
-              pointerEvents: 'none'
-            }}
-          />
-        )}
-        
-        {/* 로딩 인디케이터 */}
-        {isLoading && (
-          <div className="absolute top-5 right-5 animate-pulse">
-            <div className="w-3 h-3 bg-white rounded-full"></div>
-          </div>
-        )}
-      </div>
+      )}
     </main>
   );
 }
