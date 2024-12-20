@@ -23,7 +23,6 @@ export default function Result() {
           debug: true,
           scale: 2.5, // 해상도 증가
           quality: 1.0, // 최대 품질
-          useCORS: true, // 크로스 도메인 이미지 처리
           scrollY: -window.scrollY, // 스크롤 위치 보정
           backgroundColor: null // 배경색 제거
         });
